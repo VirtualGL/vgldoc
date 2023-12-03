@@ -1,0 +1,18 @@
+* Using VirtualGL with Other X Proxies
+{anchor: X11_Proxy_Usage}
+
+The [[turbovncusage.txt#TurboVNC_Usage][previous chapter]] described how to use
+VirtualGL with TurboVNC, but much of this information is also applicable to
+other X proxies, such as RealVNC, NX, etc.  Generally, none of these other
+solutions will provide anywhere near the performance of TurboVNC, but some of
+them have capabilities that TurboVNC lacks (NX, for instance, can do seamless
+windows.)
+
+VirtualGL reads the value of the ''DISPLAY'' environment variable to
+determine whether to enable the X11 Image Transport by default.  If ''DISPLAY''
+begins with a colon ("'':''") or with "''unix:''", then VirtualGL will assume
+that the X server connection is local and will enable the X11 Image Transport
+as the default.  This should effectively make the X11 Image Transport the
+default for most X proxies, but if for some reason that doesn't occur, then you
+can force the use of the X11 Image Transport by setting ''VGL_COMPRESS'' to
+''proxy'' or passing an argument of ''-c proxy'' to ''vglrun''.

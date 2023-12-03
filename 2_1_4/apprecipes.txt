@@ -1,0 +1,77 @@
+* Other Application Recipes
+{anchor: Application_Recipes}
+
+|| Application || Platform || Recipe || Notes ||
+| ANSA v12.1.0 | Linux/x86 \
+	| Add \
+		{nl}{nl} \
+		''LD_PRELOAD_SAVE=$LD_PRELOAD''{nl} \
+		''export LD_PRELOAD='' \
+		{nl}{nl} \
+		to the top of the ''ansa.sh'' script, then add \
+		{nl}{nl} \
+		''export LD_PRELOAD=$LD_PRELOAD_SAVE'' \
+		{nl}{nl} \
+		just prior to the ''${ANSA_EXEC_DIR}bin/ansa_linux${ext2}'' line. \
+	| The ANSA startup script directly invokes ''/lib/libc.so.6'' to query \
+		the glibc version.  Since the VirtualGL faker depends on libc, preloading \
+		VirtualGL when directly invoking ''libc.so.6'' creates an infinite loop. \
+		So it is necessary to disable the preloading of VirtualGL in the \
+		application script and then re-enable it prior to launching the actual \
+		application. \
+	|
+| AutoForm v4.0x | All \
+	| ''vglrun +sync xaf_''__''{version}''__ \
+	| AutoForm relies on mixed X11/OpenGL rendering, and thus certain features \
+		(particularly the "Dynamic Section" dialog and "Export Image" feature) do \
+		not work properly unless ''VGL_SYNC'' is enabled.  Since ''VGL_SYNC'' \
+		automatically enables the X11 image transport and disables frame \
+		spoiling, it is highly recommended that you use TurboVNC when \
+		''VGL_SYNC'' is enabled.  See {ref prefix="Section ": VGL_SYNC} for more \
+		details. \
+	|
+| Cedega v6.0.x | Linux \
+	| Add \
+		{nl}{nl} \
+		''export LD_PRELOAD=librrfaker.so'' \
+		{nl}{nl} \
+		to the top of ''~/.cedega/.winex_ver/winex-{version}/bin/winex3'', then \
+		run Cedega as you would normally (without ''vglrun''.)  Since ''vglrun'' \
+		is not being used, it is necessary to use environment variables or the \
+		VirtualGL Configuration dialog to modify VirtualGL's configuration. \
+	| The actual binary (WineX) which uses OpenGL is buried beneath several \
+		layers of Python and shell scripts.  The ''LD_PRELOAD'' variable does not \
+		get propagated down from the initial shell that invoked ''vglrun''. \
+	|
+| Heretic II | Linux/x86 \
+	| ''vglrun heretic2 +set vid_ref glx'' \
+	| {:} \
+	|
+| Java2D applications that use OpenGL | Solaris/SPARC \
+	| When VirtualGL is used in conjunction with Java v5.0 (also known as Java \
+		1.5.0) to remotely display Java2D applications using the OpenGL pipeline \
+		(see above), certain Java2D applications will cause the OpenGL subsystem \
+		to crash with the following error: \
+		{nl}{nl} \
+		''thread tries to access GL context current to another thread'' \
+		{nl}{nl} \
+		If you encounter this error, try setting the ''SUN_OGL_IS_MT'' environment \
+		variable to ''1'' and re-running the application. \
+	| Java 5.0 should call ''glXInitThreadsSUN()'' since it is using multiple \
+		OpenGL threads, but it doesn't.  Purely by chance, this doesn't cause any \
+		problems when the application is displayed locally.  However, VirtualGL \
+		changes things up enough that the luck runs out.  This issue does not \
+		exist in Java 6. \
+	|
+| Pro/ENGINEER Wildfire v2.0 | Solaris/SPARC \
+	| Add \
+		{nl}{nl} \
+		''graphics opengl'' \
+		{nl}{nl} \
+		to ''~/config.pro''.  You may also need to set the ''VGL_XVENDOR'' \
+		environment variable to ''"Sun Microsystems, Inc."'' if you are running \
+		Pro/ENGINEER 2.0 over a remote X connection to a Linux or Windows \
+		VirtualGL client. \
+	|	Pro/E 2.0 for Solaris will disable OpenGL if it detects a remote \
+		connection to a non-Sun X server. \
+	|

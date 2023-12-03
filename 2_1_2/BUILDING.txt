@@ -1,0 +1,437 @@
+How to build VirtualGL in 9043 easy steps
+=========================================
+
+
+*******************************************************************************
+**     Prerequisites - Linux
+*******************************************************************************
+
+-- OpenSSL headers and link libraries
+
+   VirtualGL can be built using the shared OpenSSL libraries provided with
+   your Linux distribution, but this produces a version of VirtualGL that may
+   not be compatible with other Linux distributions.  In order to build a fully
+   cross-compatible version of VirtualGL, install the openssl-static package,
+   which can be obtained from the "Download" area of:
+
+   http://sourceforge.net/projects/virtualgl
+
+   The direct link for openssl-static downloads is:
+
+   http://sourceforge.net/project/showfiles.php?group_id=117509&package_id=221619
+
+   There are five versions of the openssl-static package:  a 32-bit RPM
+   for GLIBC 2.2 systems (such as RedHat 7.x and Enterprise Linux 2.1),
+   32-bit and 32/64-bit RPMs for GLIBC 2.3 (and later) systems, and 32-bit
+   and 32/64-bit DEB packages for Debian-based systems.  Tarballs are also
+   provided for users of other types of systems.
+
+-- GCC and G++
+
+-- X11 dev. kit
+
+   On most Linux variants, this can be found in the "XFree86-devel" or 
+   "xorg-x11-devel" package.  On Ubuntu, it is in the "libx11-dev" package.
+
+-- GNU Make v3.7 or later
+
+-- binutils 2.12.90 or later.  This shouldn't be an issue unless you are
+   (still) running RedHat 7.x or Enterprise Linux 2.1, in which case you can
+   download an updated binutils RPM from:
+   http://mirror.atrpms.net/ccrma/mirror/7.2/
+
+-- TurboJPEG SDK
+
+   The TurboJPEG SDK Linux packages (in RPM, DEB, or tarball format) can be
+   obtained from the "Download" area of:
+
+   http://sourceforge.net/projects/virtualgl
+
+   The direct link for TurboJPEG downloads is:
+
+   http://sourceforge.net/project/showfiles.php?group_id=117509&package_id=166100
+
+   Use the i386 package for 32-bit systems and the x86_64/amd64 package for
+   64-bit systems (the 64-bit package contains both 64-bit and 32-bit
+   libraries.)
+
+
+*******************************************************************************
+**     Prerequisites - x86-64 Linux
+*******************************************************************************
+
+Building a redistributable VirtualGL package for x86-64 requires building both
+32-bit and 64-bit versions of the VirtualGL server components.  However, not
+all x86-64 Linux systems contain the 32-bit libraries necessary to build a
+32-bit version of VirtualGL.  To build 32-bit VirtualGL components on an x86-64
+Linux system, you will need, at minimum, the following 32-bit libraries:
+
+-- glibc development libraries
+
+   * Usually contained in the "glibc-devel" package (iX86)
+   * Usually installed by default on x86-64 Linux systems
+   * On Ubuntu, these are contained in the "libc6-dev-i386" and "ia32-libs"
+     packages.
+
+-- X11 dev. kit
+
+   * Usually contained in the "XFree86-devel" or "xorg-x11-devel" package
+     (iX86)
+   * Not always installed by default but usually available on the installation
+     discs
+   * On Ubuntu, you may need to use getlibs
+     (http://ubuntuforums.org/showthread.php?t=474790&highlight=getlibs) to
+     install the 32-bit X11 dev. kit:
+     > sudo getlibs -p libX11-dev
+     > sudo getlibs -p libxext-dev
+     > sudo getlibs -p libxau-dev
+     > sudo getlibs -p libglu1-mesa-dev
+
+If for some reason your preferred 64-bit Linux distribution does not contain
+one or more of the necessary 32-bit prerequisites, then:
+
+  (1) Complain to your distribution vendor.
+  (2) All x86-64 distributions of Linux have a corresponding 32-bit-only
+      distribution, usually released on a separate set of discs.  On those
+      discs, you should be able to find the 32-bit versions of the X11 dev. kit
+      and the GLIBC dev. kit to match the 64-bit versions that are already
+      installed on your system. You may have to use "rpm --force" to force the
+      install of the 32-bit development packages, since they might contain
+      header files which conflict with the 64-bit development packages that
+      are already installed.  On Debian-based systems, you will need to use
+      "dpkg --force-architecture" to force the installation of i386 packages
+      on an amd64 system.  See item (1) above.
+
+
+*******************************************************************************
+**     Prerequisites - Mac
+*******************************************************************************
+
+-- Xcode Tools
+   * Available on the OS X install discs or from:
+     http://developer.apple.com/tools/xcode
+   * At minimum, you will need the following packages from Xcode:
+     gcc v3 or above
+     X11 SDK
+     OpenGL SDK
+     Mac OS X SDK
+
+-- TurboJPEG SDK (Intel-based Macs only)
+
+   * The TurboJPEG SDK disk image (DMG) can be obtained from the "Download"
+     area of:
+
+     http://sourceforge.net/projects/virtualgl
+
+     The direct link for TurboJPEG downloads is:
+
+     http://sourceforge.net/project/showfiles.php?group_id=117509&package_id=166100
+
+   * Open the DMG file and double-click on the package inside to install
+     TurboJPEG.
+
+-- Quicktime and CoreAudio SDK's (PowerPC-based Macs only)
+
+
+*******************************************************************************
+**     Prerequisites - Solaris
+*******************************************************************************
+
+-- Solaris 8 or newer (Sparc) or Solaris/OpenSolaris 10 or newer (x86)
+
+-- OpenSSL headers and link libraries
+
+   VirtualGL can be built using the shared OpenSSL libraries provided with
+   your Solaris distribution, but this produces a version of VirtualGL that may
+   not be compatible with other versions of Solaris.  In order to build a fully
+   cross-compatible version of VirtualGL, download and install the latest
+   OpenSSL package from Blastwave (http://www.blastwave.org).
+
+-- Sun Studio/Workshop Pro Compiler
+
+   * Tested with v5.5 (Sparc) and with Sun Studio 10, 11, & 12 (Sparc and x86)
+   * See http://www.sun.com/software/products/studio/ for a free download.
+
+... or ...
+
+-- GCC
+
+   * Preferred version for SPARC:
+     http://cooltools.sunsource.net/gcc/4.0.3/install.html
+   * Also available from the Solaris 9 & 10 Companion CD's
+     (http://www.sun.com/software/solaris/freeware/),
+     Blastwave (http://www.blastwave.org), or SunFreeware
+     (http://www.sunfreeware.com/)
+   * Build VirtualGL using
+       gmake CC=gcc
+
+-- SOLARIS 8 ONLY:  Linker patch 109147-32 must be installed
+
+   * See http://sunsolve.sun.com/pub-cgi/show.pl?target=patchpage
+
+-- SPARC ONLY:  Sun OpenGL
+
+   * Requires v1.3 or later (1.5 or later recommended)
+   * See http://www.sun.com/software/graphics/opengl/
+   * If your build system has Sun OpenGL v1.3, build VirtualGL using
+       gmake USEGLP=no
+
+-- GNU Make v3.7 or later
+
+   * Available from the Solaris 9 & 10 Companion CD's
+     (http://www.sun.com/software/solaris/freeware/),
+     Blastwave (http://www.blastwave.org), or SunFreeware
+     (http://www.sunfreeware.com/)
+
+-- Sun mediaLib  [recommended]
+
+   * VirtualGL includes a version of libjpeg v6b which will produce correct,
+     albeit slow, behavior.  In order to get optimal performance out of
+     VirtualGL on Solaris, it is necessary to use the mediaLib codec, which is
+     capable of compressing JPEG images 3-4x faster than libjpeg.
+   * mediaLib is pre-installed on Solaris 10.  It can also be downloaded for
+     free from http://www.sun.com/processors/vis/mlib.html.  Solaris 10/x86
+     users should upgrade the pre-installed version of mediaLib on their
+     system to mediaLib 2.5 in order to achieve better performance.
+
+
+*******************************************************************************
+**     Prerequisites - Win32
+*******************************************************************************
+
+These prerequisites are for building a native Windows client.  For building
+VirtualGL on Cygwin, see the next section.
+
+-- GNU Make v3.7 or later
+
+   GNU Make for Win32 can be found in MSYS
+   (http://www.mingw.org/download.shtml) or Cygwin (http://www.cygwin.com/)
+
+-- Microsoft Visual C++ 2003 or later
+
+   * Tested with Microsoft Visual C++ 2005 Express Edition and
+     Microsoft Visual C++ 2008 Express Edition (both free downloads):
+
+     http://msdn.microsoft.com/vstudio/express/visualc/
+
+   * Add the compiler binary directories (for instance,
+     c:\Program Files\Microsoft Visual Studio 9.0\VC\BIN;
+     c:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE)
+     to the system or user PATH environment variable prior to building
+     VirtualGL.
+   * Add the compiler include directory (for instance,
+     c:\Program Files\Microsoft Visual Studio 9.0\VC\INCLUDE)
+     to the system or user INCLUDE environment variable prior to building
+     VirtualGL.
+   * Add the compiler library directory (for instance,
+     c:\Program Files\Microsoft Visual Studio 9.0\VC\LIB)
+     to the system or user LIB environment variable prior to building
+     VirtualGL.
+
+-- Microsoft Windows SDK
+
+   * This is included with Microsoft Visual C++ 2008 Express Edition, but users
+     of prior editions of Visual C++ can download the SDK from:
+
+     http://msdn2.microsoft.com/en-us/windowsserver/bb980924.aspx
+
+   * Add the SDK binary directory (for instance,
+     c:\Program Files\Microsoft SDKs\Windows\v6.0A\bin)
+     to the system or user PATH environment variable prior to building
+     VirtualGL.
+   * Add the SDK include directory (for instance,
+     c:\Program Files\Microsoft SDKs\Windows\v6.0A\include)
+     to the system or user INCLUDE environment variable prior to building
+     VirtualGL.
+   * Add the SDK library directory (for instance,
+     c:\Program Files\Microsoft SDKs\Windows\v6.0A\lib)
+     to the system or user LIB environment variable prior to building
+     VirtualGL.
+
+-- OpenSSL headers and link libraries
+
+   * Download the latest Win32 OpenSSL installer from:
+
+     http://www.slproweb.com/products/Win32OpenSSL.html
+
+   * Install it into c:\openssl.
+   * Add c:\openssl\include to the system or user INCLUDE environment
+     variable prior to building VirtualGL.
+   * Add c:\openssl\lib\VC\static to the system or user LIB environment
+     variable prior to building VirtualGL.
+   * If you are using OpenSSL 0.9.8h and Visual C++ 2008 or later to build
+     VirtualGL, then comment out the following lines in
+     c:\openssl\include\openssl\ossl_typ.h prior to building VirtualGL:
+
+     typedef struct ocsp_req_ctx_st OCSP_REQ_CTX;
+     typedef struct ocsp_response_st OCSP_RESPONSE;
+     typedef struct ocsp_responder_id_st OCSP_RESPID;
+
+     Hopefully this will be fixed in later releases of OpenSSL.
+
+-- Hummingbird Exceed XDK v8 or later
+
+   * Add the XDK include path (for instance,
+     c:\Program Files\Hummingbird\Connectivity\13.00\Exceed\XDK\include)
+     to the system or user INCLUDE environment variable prior to building
+     VirtualGL.
+   * Add the XDK library path (for instance,
+     c:\Program Files\Hummingbird\Connectivity\13.00\Exceed\XDK\lib)
+     to the system or user LIB environment variable prior to building
+     VirtualGL.
+
+-- TurboJPEG SDK
+
+   * The TurboJPEG SDK Windows installer (EXE) can be obtained from the
+     "Download" area of:
+
+     http://sourceforge.net/projects/virtualgl
+
+     The direct link for TurboJPEG downloads is:
+
+     http://sourceforge.net/project/showfiles.php?group_id=117509&package_id=166100
+
+   * Add the TurboJPEG include path (c:\turbojpeg\include) to the system
+     or user INCLUDE environment variable prior to building VirtualGL.
+   * Add the TurboJPEG library path (c:\turbojpeg\lib) to the system
+     or user LIB environment variable prior to building VirtualGL.
+
+
+*******************************************************************************
+**     Building VirtualGL on Cygwin
+*******************************************************************************
+
+You should be able to build and run the VirtualGL client on Cygwin, although
+this configuration has not been thoroughly tested.  To build VirtualGL on
+Cygwin:
+
+-- Install the following Cygwin packages if they aren't already installed:
+   gcc
+   gcc-core
+   gcc-g++
+   make
+   openssl-devel
+   libX11-devel
+   libXext-devel
+   libGLU-devel
+
+-- Download and install the TurboJPEG SDK
+
+   * The TurboJPEG SDK Windows installer (EXE) can be obtained from the
+     "Download" area of:
+
+     http://sourceforge.net/projects/virtualgl
+
+     The direct link for TurboJPEG downloads is:
+
+     http://sourceforge.net/project/showfiles.php?group_id=117509&package_id=166100
+
+   * Add the TurboJPEG include path (/cygdrive/c/turbojpeg/include) to the
+     CPATH environment variable prior to building VirtualGL.
+   * Add the TurboJPEG library path (/cygdrive/c/turbojpeg/lib) to the
+     LIBRARY_PATH environment variable prior to building VirtualGL.
+
+-- Pass an argument of "platform=cygwin" to make when performing the
+   build:
+
+     make platform=cygwin
+
+   The binaries will reside in "cygwin/bin" and "cygwin/lib".
+
+
+*******************************************************************************
+**     Building
+*******************************************************************************
+
+Assuming all of the above is set up correctly, you should be able to just type
+
+  make
+
+On Solaris, type
+
+  gmake
+
+instead.
+
+
+*******************************************************************************
+**     Makefile Options
+*******************************************************************************
+
+Each of these options can be passed as an argument to "make" or "gmake".  You
+can also create a file called "config" in the root of the VirtualGL build
+directory and add Makefile options to that file so as to avoid having to type
+them every time you build VirtualGL.
+
+DEBUG = yes
+
+  * Build a version of VirtualGL with debugging symbols and no optimization.
+    The debug version will reside in "${platform}/dbg/lib" and
+    "${platform}/dbg/bin", whereas the release version will reside in
+    "${platform}/lib" and "${platform}/bin", so these two versions can be built
+    independently of one another.
+
+JPEGLIB = libjpeg
+
+  * The default build of VirtualGL links against the TurboJPEG SDK, which
+    embeds highly accelerated JPEG coding routines from the Intel(R) Integrated
+    Performance Primitives or Sun mediaLib.  TurboJPEG enables VirtualGL to
+    compress full-screen images at interactive frame rates, but it relies upon
+    closed source components to achieve this.  The use of these closed source
+    components does not limit your ability to use and distribute VirtualGL
+    in any way, but some may still wish to build a 100% open source version
+    of VirtualGL.  Thus, specifying this Makefile option will build an
+    (included) version of libjpeg and link VirtualGL against it rather than the
+    accelerated TurboJPEG codecs mentioned above.  The use of libjpeg produces
+    correct, albeit slow, behavior.  The version of libjpeg included in the
+    VirtualGL build resides in the "jpeg/jpeg-6b" directory and differs
+    from the IJG release (see http://www.ijg.org) only in its support of little
+    endian and 32-bit pixel formats (both of which are necessary to allow
+    the VirtualGL client to decompress directly into X11 shared memory.)
+
+M32 = yes
+
+  * On x86-64 systems, this cross-compiles a 32-bit (x86) version of VirtualGL.
+
+CC = gcc
+
+  * On Solaris, this builds VirtualGL using the GCC compiler rather than the
+    default (Sun Studio) compiler.  gcc and g++ should be in your PATH.
+
+USEGLP = no
+
+  * On Solaris, this builds VirtualGL without GLP extension code.  This is 
+    necessary to build VirtualGL on versions of Sun OpenGL prior to 1.5.
+
+USESSL = no
+
+  * Build VirtualGL without SSL support.
+
+
+*******************************************************************************
+**     Installing / Distributing
+*******************************************************************************
+
+On Unix systems, you can type
+
+  make install [prefix={install prefix}]
+
+"prefix" defaults to "/usr/local" but can be changed to something else (such
+as "/usr") if you prefer.  Executables will be installed to "$prefix/bin", and
+libraries will be installed to "$prefix/lib" (or "$prefix/lib/64" or
+"$prefix/lib64", as appropriate.)
+
+To build a redistributable package, type
+
+  make dist
+
+  * On Linux, this requires RPM v4 or later.
+  * On Solaris, this requires pkgmk, pkgtrans, and bzip2.
+  * On Windows, this requires the Nullsoft Install System
+    (http://nsis.sourceforge.net/.)  makensis.exe should be in your PATH.
+  * On OS X, this requires the PackageMaker application, which must be
+    installed in /Developer/Applications/Utilities.
+
+To build a redistributable DEB package (Debian-compatible systems), type
+
+  make deb

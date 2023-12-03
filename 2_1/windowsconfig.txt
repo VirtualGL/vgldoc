@@ -1,0 +1,108 @@
+* Configuring a Windows Machine as a Client for the VGL Image Transport
+
+	#. Install Hummingbird Exceed if it isn't already installed.
+
+	#. Add the Exceed path (example: ''C:\\Program Files\\Hummingbird\\Connectivity\\9.00\\Exceed'')
+		to the system ''PATH'' environment if it isn't already there.
+
+** Optimizing Exceed
+
+*** Disabling Pixel Format Conversion (Exceed 2006 and earlier)
+#OPT: noList! plain!
+
+	#. Load Exceed XConfig (right-click on the Exceed taskbar icon, then select
+		__Tools-->Configuration__.)
+
+	#. Open the "X Server Protocol" applet in XConfig.
+
+		!!! If you are using the "Classic View" mode of XConfig, open the
+		"Protocol" applet instead.
+
+	#. In the "X Server Protocol" applet, select the "Protocol" tab and make sure
+		that "Use 32 bits per pixel for true color" is not checked.
+		{nl}{nl}
+		{img: exceed1.png}
+
+	#. Click "Validate and Apply Changes."  If XConfig asks whether you want to
+		perform a server reset, click "Yes."
+
+*** Disabling Backing Store
+#OPT: noList! plain!
+
+	#. Load Exceed XConfig (right-click on the Exceed taskbar icon, then select
+		__Tools-->Configuration__.)
+
+	#. Open the "Other Server Settings" applet in XConfig.
+
+		!!! If you are using the "Classic View" mode of XConfig, open the
+		"Performance" applet instead. 
+
+	#. Select the "Performance" tab and make sure that "Default Backing Store" is
+		set to "None."
+		{nl}{nl}
+		{img: exceed3.png}
+
+	#. Click "Validate and Apply Changes."  If XConfig asks whether you want to
+		perform a server reset, click "Yes."
+
+*** Enabling MIT-SHM
+#OPT: noList! plain!
+
+VirtualGL has the ability to take advantage of the MIT-SHM extension in
+Hummingbird Exceed to accelerate image drawing on Windows.  This can improve
+the overall performance of the VirtualGL pipeline by as much as 20% in some
+cases.
+
+The bad news is that this extension is not consistently implemented across
+all versions of Exceed.  In particular, Exceed 8, Exceed 9, and Exceed 2008
+require patches to make it work properly.  If you are using one of these
+versions of Exceed, you will need to obtain the following patches from the
+Hummingbird support site:
+
+|| Product || Patches Required || How to Obtain ||
+| Hummingbird Exceed 8.0 \
+| ''hclshm.dll'' v9.0.0.1 (or higher){nl} \
+	''xlib.dll'' v9.0.0.3 (or higher){nl} \
+	''exceed.exe'' v8.0.0.28 (or higher) \
+| Download all patches from the \
+	[[http://connectivity.hummingbird.com/support/nc/exceed_patches.html][Hummingbird support site]]. \
+	{nl} \
+	(__Hummingbird WebSupport account required__) \
+|
+| Hummingbird Exceed 9.0 \
+| ''hclshm.dll'' v9.0.0.1 (or higher){nl} \
+	''xlib.dll'' v9.0.0.3 (or higher){nl} \
+	''exceed.exe'' v9.0.0.9 (or higher) \
+| ''exceed.exe'' can be patched by running Hummingbird Update.{nl} \
+	{nl} \
+	All other patches must be downloaded from the \
+	[[http://connectivity.hummingbird.com/support/nc/exceed_patches.html][Hummingbird support site]]. \
+	{nl} \
+	(__Hummingbird WebSupport account required__) \
+|
+| Hummingbird Exceed 2008 \
+| ''xlib.dll'' v13.0.1.235 (or higher) \
+| Download all patches from the \
+	[[http://connectivity.hummingbird.com/support/nc/exceed_patches.html][Hummingbird support site]]. \
+	{nl} \
+	(__Hummingbird WebSupport account required__) \
+|
+
+No patches should be necessary for Exceed 10, 2006, or 2007.
+
+Next, you need to enable the MIT-SHM extension in Exceed:
+
+	#. Load Exceed XConfig (right-click on the Exceed taskbar icon, then select
+		__Tools-->Configuration__.)
+
+	#. Open the "X Server Protocol" applet in XConfig.
+
+		!!! If you are using the "Classic View" mode of XConfig, open the
+		"Protocol" applet instead.
+
+	#. Select the "Extensions" tab and make sure that "MIT-SHM" is checked.
+		{nl}{nl}
+		{img: exceed2.png}
+
+	#. Click "Validate and Apply Changes."  If XConfig asks whether you want to
+		perform a server reset, click "Yes."

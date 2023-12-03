@@ -1,0 +1,270 @@
+* System Requirements
+
+** Linux/x86
+
+|| || Server (x86) || Server (x86-64) || Client ||
+| Recommended CPU \
+	| Pentium 4, 1.7 GHz or faster (or equivalent) \
+		{list type=ul: \
+			{item:For optimal performance, the processor should support SSE2 \
+				extensions.} \
+			{item:Dual processors recommended}} \
+	| Pentium 4/Xeon with EM64T, or...{nl} \
+		AMD Opteron or Athlon64, 1.8 GHz or faster \
+		{list type=ul: \
+			{item:For optimal performance with 64-bit VirtualGL, the processor \
+				should support SSE3 extensions.  Only newer AMD 64-bit processors \
+				(mid-2005 and later) support SSE3.} \
+			{item:Dual processors recommended}} \
+	| Pentium III or Pentium 4, 1.0 GHz or faster (or equivalent) \
+	|
+| Graphics \
+	| Any decent 3D graphics card that supports Pbuffers \
+		{list type=ul: \
+			{item:Install the vendor drivers for the server's 3D graphics card. \
+				Do not use the drivers that ship with Linux, as these do not provide \
+				3D acceleration or Pbuffer support.}} \
+	| < \
+	| Any graphics card with decent 2D performance \
+		{list type=ul: \
+			{item:If using a 3D graphics card, install the vendor drivers for \
+				that 3D graphics card.}} \
+	|
+| Recommended O/S \
+	| {list type=ul: \
+			{item:Any distribution in the \
+				[[http://www.redhat.com/][RedHat]] or [[http://www.novell.com/linux/][SuSE]] \
+				families (including [[http://fedora.redhat.com/][Fedora]], \
+				[[http://www.centos.org/][CentOS]], and \
+				[[http://www.whiteboxlinux.org/][White Box]])} \
+			{item:Specifically tested with RedHat Enterprise Linux 2.1, RedHat/CentOS \
+				Enterprise Linux 3, 4, & 5 (32-bit and 64-bit), and SuSE Linux Enterprise \
+				9 & 10 (32-bit and 64-bit)}} \
+	| < \
+	| < \
+	|
+| Other Software \
+	| X server configured to export True Color (24-bit or 32-bit) visuals \
+	| < \
+	| < \
+	|
+#OPT: hiCol=first
+
+** Linux/Itanium
+
+VirtualGL should build and run on Itanium Linux, but it has not been thoroughly
+tested.  [[http://sourceforge.net/users/dcommander][Contact us]] if you
+encounter any difficulties.
+
+** Solaris/x86
+
+|| || Server || Client ||
+| Recommended CPU \
+	| Pentium 4/Xeon with EM64T, or...{nl} \
+		AMD Opteron or Athlon64, 1.8 GHz or faster \
+		{list type=ul: \
+	    {item:Dual processors recommended}} \
+	| Pentium III or Pentium 4, 1.0 GHz or faster (or equivalent) \
+	|
+| Graphics \
+	| nVidia 3D graphics card \
+	| Any graphics card with decent 2D performance \
+	|
+| O/S \
+	| Solaris 10 or higher \
+	| < \
+	| < \
+	|
+| Other Software \
+	| {list type=ul: \
+			{item:[[http://www.sun.com/processors/vis/mlib.html][Sun mediaLib]] \
+				(v2.5 or higher recommended *)} \
+			{item:[[http://sunsolve.sun.com/pub-cgi/show.pl?target=patchpage][Solaris Patch]] \
+				118345-04 (or later)} \
+			{item:X server configured to export True Color (24-bit or 32-bit) \
+				visuals}} \
+	| {list type=ul: \
+			{item:[[http://www.sun.com/processors/vis/mlib.html][Sun mediaLib]] \
+				(v2.5 or higher recommended *)} \
+			{item:X server configured to export True Color (24-bit or 32-bit) \
+				visuals}} \
+	|
+#OPT: hiCol=first
+
+	!!! * mediaLib is pre-installed on Solaris 10/x86 and higher, but it is
+	strongly recommended that you download and install the mediaLib 2.5 upgrade
+	from the link above.  mediaLib 2.5 improves the performance of VirtualGL
+	significantly on Solaris/x86 systems, when compared to the pre-installed
+	version of mediaLib.
+
+** Solaris/Sparc
+
+|| || Server || Client ||
+| Recommended CPU \
+	| UltraSPARC III 900 MHz or faster \
+		{list type=ul: \
+			{item:Dual processors recommended}} \
+	| UltraSPARC III 900 MHz or faster \
+	|
+| Graphics \
+	| Any decent 3D graphics card that supports Pbuffers \
+		{list type=ul: \
+			{item:Tested with \
+				[[http://www.sun.com/desktop/products/graphics/xvr600/][XVR-600]], \
+				[[http://www.sun.com/desktop/products/graphics/xvr1200/][XVR-1200]] \
+				("jfb"), and \
+				[[http://www.sun.com/desktop/products/graphics/xvr2500/][XVR-2500]] \
+				("kfb")}} \
+	| Any graphics card with decent 2D performance \
+	|
+| O/S \
+	| Solaris 8 or higher \
+	| < \
+	|
+| Other Software \
+	| {list type=ul: \
+			{item:[[http://www.sun.com/processors/vis/mlib.html][Sun mediaLib]] \
+				(pre-installed on Solaris 10 and higher)} \
+			{item:[[http://www.sun.com/software/graphics/opengl/][Sun OpenGL]] \
+				1.3 or later (1.5 or later required for [[#GLP_Usage][GLP]])} \
+			{item:If your system does not ship with SSh pre-installed (older Solaris \
+				8 and 9 systems don't), then download and install an OpenSSH package \
+				from [[http://www.blastwave.org/][Blastwave]] or \
+				http://www.sunfreeware.com/.} \
+			{item:X server configured to export True Color (24-bit or 32-bit) \
+				visuals (if not using [[#GLP_Usage][GLP]])}} \
+		Recommended [[http://sunsolve.sun.com/pub-cgi/show.pl?target=patchpage][Patches]] \
+		{list type=ul: \
+			{item:__OpenGL 1.5__: 120812-15 (or later)} \
+			{item:__XVR-2500 driver__: 120928-15 (or later)} \
+			{item:__OpenGL 1.3, 32-bit:__ 113886-41 (or later)} \
+			{item:__OpenGL 1.3, 64-bit:__ 113887-41 (or later)}} \
+	| {list type=ul: \
+			{item:[[http://www.sun.com/processors/vis/mlib.html][Sun mediaLib]] \
+				(pre-installed on Solaris 10 and higher)} \
+			{item:[[http://www.sun.com/software/graphics/opengl/][Sun OpenGL]] \
+				1.3 or later recommended if the client has a 3D graphics card \
+				installed.  If available, the VirtualGL Client will use \
+				OpenGL to draw images, which improves the client's performance on Sun \
+				3D graphics cards.} \
+			{item:If your system does not ship with SSh pre-installed (older Solaris \
+				8 and 9 systems don't), then download and install an OpenSSH package \
+				from [[http://www.blastwave.org/][Blastwave]] or \
+				http://www.sunfreeware.com/.} \
+			{item:X server configured to export True Color (24-bit or 32-bit) \
+				visuals}} \
+	|
+#OPT: hiCol=first
+
+** Mac/x86
+
+|| || Client ||
+| Recommended CPU \
+	| Any Intel-based Mac \
+	|
+| O/S \
+	| OS X 10.4 ("Tiger") or later \
+	|
+| Other Software \
+	| {list type=ul: \
+			{item:__VGL Image Transport Only__: Mac X11 application (in the \
+				"Optional Installs" package on the OS X install discs)}} \
+	|
+#OPT: hiCol=first
+
+** Windows
+
+|| || Client ||
+| Recommended CPU \
+	| Pentium III or Pentium 4, 1.0 GHz or faster (or equivalent) \
+	|
+| Graphics \
+	| Any graphics card with decent 2D performance \
+	|
+| O/S \
+	| Windows 2000 or later \
+	|
+| Other Software \
+	| {list type=ul: \
+			{item:__VGL Image Transport Only__: [[http://connectivity.hummingbird.com][Hummingbird]] \
+				Exceed 8 or newer required} \
+			{item:Client display must have a 24-bit or 32-bit color depth \
+				(True Color.)}} \
+	|
+#OPT: hiCol=first
+
+** Additional Requirements for Stereographic Rendering
+
+	!!! The client requirements do not apply to anaglyphic stereo.  See
+	{ref prefix="Chapter ": Advanced_OpenGL} for more details.
+
+|| || Server || Client ||
+| Linux \
+	| 3D graphics card that supports stereo (example: nVidia Quadro) \
+		and is configured to export stereo visuals \
+	| < \
+	|
+| Solaris/x86 \
+	| ^ \
+	| ^ \
+	|
+| Mac/x86 \
+	| ^ \
+	|
+| Solaris/Sparc \
+	| {list type=ul: \
+			{item:[[http://www.sun.com/desktop/products/graphics/xvr2500/][XVR-2500]] \
+				graphics card} \
+			{item:[[http://www.sun.com/software/graphics/opengl/][Sun OpenGL]] 1.5 \
+				or later} \
+			{item:OpenGL [[http://sunsolve.sun.com/pub-cgi/show.pl?target=patchpage][Patch]] \
+				120812-14 (or later)} \
+			{item:XVR-2500 driver [[http://sunsolve.sun.com/pub-cgi/show.pl?target=patchpage][Patch]] \
+				120928-10 (or later)}} \
+	| {list type=ul: \
+			{item:3D graphics card that supports stereo (examples: XVR-1200, \
+				XVR-2500) and is configured to export stereo visuals} \
+			{item:[[http://www.sun.com/software/graphics/opengl/][Sun OpenGL]] 1.3 \
+				or later}} \
+	|
+| Windows \
+	| N/A \
+	| {list type=ul: \
+			{item:3D graphics card that supports stereo (examples: nVidia \
+				Quadro, 3D Labs Wildcat Realizm) and is configured to export stereo \
+				pixel formats} \
+			{item:[[http://connectivity.hummingbird.com][Hummingbird]] \
+				Exceed 3D v8 or newer}} \
+	|
+#OPT: hiCol=first
+
+** Additional Requirements for Transparent Overlays
+
+|| || Client ||
+| Linux \
+	| 3D graphics card that supports transparent overlays (example: \
+		nVidia Quadro) and is configured to export overlay visuals \
+	|
+| Solaris/x86 \
+	| ^ \
+	|
+| Mac/x86 \
+	| ^ \
+	|
+| Solaris/Sparc \
+	| {list type=ul: \
+			{item:3D graphics card that supports transparent overlays (examples: \
+				XVR-1200, XVR-2500) and is configured to export \
+				overlay visuals} \
+			{item:[[http://www.sun.com/software/graphics/opengl/][Sun OpenGL]] 1.3 \
+				or later}} \
+	|
+| Windows \
+	| {list type=ul: \
+			{item:3D graphics card that supports transparent overlays (examples: \
+				nVidia Quadro, 3D Labs Wildcat Realizm) and is configured to \
+				export overlay pixel formats} \
+			{item:[[http://connectivity.hummingbird.com][Hummingbird]] \
+				Exceed 3D v8 or newer}} \
+	|
+#OPT: hiCol=first

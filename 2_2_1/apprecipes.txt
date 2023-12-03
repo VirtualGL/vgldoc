@@ -1,0 +1,98 @@
+* Other Application Recipes
+{anchor: Application_Recipes}
+
+|| Application || Platform || Recipe || Notes ||
+| Abaqus v6 | Linux \
+	| It is necessary to add \
+		{nl}{nl} \
+		''import os''{nl} \
+		''os.environ['ABAQUS_EMULATE_OVERLAYS'] = "1"'' \
+		{nl}{nl} \
+		to ''/{abaqus_install_dir}/{abaqus_version}/site/abaqus_v6.env'' to make \
+		Abaqus v6 work properly with VirtualGL in an X proxy environment.  If \
+		this is not done, then the application may fail to launch, fail to \
+		display the 3D pixels, or the 3D pixels may become corrupted whenever \
+		other windows obscure them. \
+	| VirtualGL does not redirect the rendering of transparent overlays, since \
+		those cannot be rendered in a Pbuffer.  Thus, in order to use transparent \
+		overlays, the 2D X Server must be able to render them, which is never the \
+		case for X proxies (see {ref prefix="Section ": overlays} for more \
+		details.)  Setting ''ABAQUS_EMULATE_OVERLAYS'' to ''1'' causes \
+		the application to emulate overlay rendering instead of using actual \
+		transparent overlays. \
+	|
+| Abaqus v6 | Linux \
+	| ''vglrun -nodl {abaqus_path}/abaqus'' \
+	| User reports indicate that Abaqus 6.9 will not work properly if \
+		''libdlfaker.so'' from VirtualGL is preloaded into it.  This may be true \
+		for other versions of Abaqus as well. \
+	|
+| Animator 4 | Linux \
+	| Comment out the line that reads \
+		{nl}{nl} \
+		''unsetenv LD_PRELOAD'' \
+		{nl}{nl} \
+		in the ''a4'' script, then launch Animator 4 using \
+		{nl}{nl} \
+		''vglrun -ge a4'' \
+		{nl}{nl} \
+	| When the ''a4'' script unsets ''LD_PRELOAD'', this prevents VirtualGL \
+		from being loaded into the application.  Animator 4 additionally checks \
+		the value of ''LD_PRELOAD'' and attempts to unset it from inside \
+		the application.  Using ''vglrun -ge'' to launch the application fools \
+		Animator 4 into thinking that ''LD_PRELOAD'' is unset. \
+	|
+| ANSA v12.1.0 | Linux \
+	| Add \
+		{nl}{nl} \
+		''LD_PRELOAD_SAVE=$LD_PRELOAD''{nl} \
+		''export LD_PRELOAD='' \
+		{nl}{nl} \
+		to the top of the ''ansa.sh'' script, then add \
+		{nl}{nl} \
+		''export LD_PRELOAD=$LD_PRELOAD_SAVE'' \
+		{nl}{nl} \
+		just prior to the ''${ANSA_EXEC_DIR}bin/ansa_linux${ext2}'' line. \
+	| The ANSA startup script directly invokes ''/lib/libc.so.6'' to query \
+		the glibc version.  Since the VirtualGL faker depends on libc, preloading \
+		VirtualGL when directly invoking ''libc.so.6'' creates an infinite loop. \
+		So it is necessary to disable the preloading of VirtualGL in the \
+		application script and then re-enable it prior to launching the actual \
+		application. \
+	|
+| Ansoft HFSS, Roxar RMS | Linux \
+	| Set the ''VGL_SPOILLAST'' environment variable to ''0'' prior to \
+		launching the application with ''vglrun'' \
+	| These applications use double buffering and draw geometry to the back buffer, \
+		but node highlighting and rubber banding are drawn directly to the front \
+		buffer. In order for these front-buffer operations to be displayed \
+		properly, it is necessary to use the "spoil first" frame spoiling \
+		algorithm whenever the application calls ''glFlush()''.  See \
+		{ref prefix="Section ": VGL_SPOILLAST} for more details. \
+	|
+| AutoForm v4.0x | All \
+	| ''vglrun +sync xaf_''__''{version}''__ \
+	| AutoForm relies on mixed X11/OpenGL rendering, and thus certain features \
+		(particularly the "Dynamic Section" dialog and "Export Image" feature) do \
+		not work properly unless ''VGL_SYNC'' is enabled.  Since ''VGL_SYNC'' \
+		automatically enables the X11 transport and disables frame spoiling, it \
+		is highly recommended that you use an X proxy when ''VGL_SYNC'' is enabled. \
+		See {ref prefix="Section ": VGL_SYNC} for more details. \
+	|
+| Cedega v6.0.x | Linux \
+	| Add \
+		{nl}{nl} \
+		''export LD_PRELOAD=librrfaker.so'' \
+		{nl}{nl} \
+		to the top of ''~/.cedega/.winex_ver/winex-{version}/bin/winex3'', then \
+		run Cedega as you would normally (without ''vglrun''.)  Since ''vglrun'' \
+		is not being used, it is necessary to use environment variables or the \
+		VirtualGL Configuration dialog to modify VirtualGL's configuration. \
+	| The actual binary (WineX) which uses OpenGL is buried beneath several \
+		layers of Python and shell scripts.  The ''LD_PRELOAD'' variable does not \
+		get propagated down from the initial shell that invoked ''vglrun''. \
+	|
+| Heretic II | Linux \
+	| ''vglrun heretic2 +set vid_ref glx'' \
+	| {:} \
+	|
